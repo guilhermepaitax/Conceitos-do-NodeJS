@@ -22,10 +22,42 @@ server.get("/projects", (req, res) => {
   return res.json(projects);
 });
 
-server.put("/projects/:id", (req, res) => {});
+server.put("/projects/:id", (req, res) => {
+  const { id } = req.params;
+  const { title } = req.body;
 
-server.delete("/projects/:id", (req, res) => {});
+  projects.map(project => {
+    if (project.id === id) {
+      project.title = title;
+    }
+  });
 
-server.post("/projects/:id/tasks", (req, res) => {});
+  return res.json(projects);
+});
+
+server.delete("/projects/:id", (req, res) => {
+  const { id } = req.params;
+
+  projects.map((project, index) => {
+    if (project.id === id) {
+      projects.splice(index, 1);
+    }
+  });
+
+  return res.send();
+});
+
+server.post("/projects/:id/tasks", (req, res) => {
+  const { id } = req.params;
+  const { title } = req.body;
+
+  projects.map(project => {
+    if (project.id === id) {
+      project.tasks.push(title);
+    }
+  });
+
+  return res.json(projects);
+});
 
 server.listen(3000);
